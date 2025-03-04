@@ -1,5 +1,6 @@
+import React from "react"; // Add this import
 import { render, screen } from "@testing-library/react";
-import TodoList from "../components/TodoList"; // Update with the correct path
+import TodoList from "../components/TodoList";
 
 test("renders TodoList", () => {
   render(<TodoList />);
