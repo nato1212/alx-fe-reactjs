@@ -42,24 +42,17 @@ const RecipeDetail = () => {
           {/* Ingredients Section */}
           <h2 className="text-2xl font-semibold mb-2">Ingredients:</h2>
           <ul className="list-disc pl-6 mb-8">
-            {/* You can replace this static list with dynamic data if necessary */}
-            <li>1 lb pasta</li>
-            <li>2 eggs</li>
-            <li>1/2 cup Parmesan cheese</li>
-            <li>4 slices of bacon</li>
-            <li>Black pepper</li>
+            {recipe.ingredients.map((ingredient, index) => (
+              <li key={index}>{ingredient}</li>
+            ))}
           </ul>
 
           {/* Cooking Instructions Section */}
           <h2 className="text-2xl font-semibold mb-2">Cooking Instructions:</h2>
           <ol className="list-decimal pl-6">
-            <li>Boil pasta until al dente.</li>
-            <li>Fry bacon until crispy.</li>
-            <li>Mix eggs and Parmesan cheese in a bowl.</li>
-            <li>
-              Combine everything in the pan with pasta water and black pepper.
-            </li>
-            <li>Serve with extra cheese on top.</li>
+            {recipe.instructions.map((step, index) => (
+              <li key={index}>{step}</li>
+            ))}
           </ol>
         </div>
       </div>
