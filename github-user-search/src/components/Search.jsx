@@ -13,10 +13,14 @@ function Search() {
     setError(false);
     setUser(null);
 
-    const data = await fetchUserData(username);
-    if (data) {
-      setUser(data);
-    } else {
+    try {
+      const data = await fetchUserData(username);
+      if (data) {
+        setUser(data);
+      } else {
+        setError(true);
+      }
+    } catch {
       setError(true);
     }
     setLoading(false);
@@ -40,6 +44,9 @@ function Search() {
         <div>
           <img src={user.avatar_url} alt={user.login} width="100" />
           <h2>{user.name || user.login}</h2>
+          <p>Followers: {user.followers}</p>
+          <p>Following: {user.following}</p>
+          <p>Public Repos: {user.public_repos}</p>
           <a href={user.html_url} target="_blank" rel="noopener noreferrer">
             View Profile
           </a>
