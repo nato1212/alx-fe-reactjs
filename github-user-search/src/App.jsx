@@ -1,4 +1,4 @@
-import "./App.css";
+import "./index.css";
 import Search from "./components/Search";
 
 function App() {
@@ -15,6 +15,7 @@ function App() {
     >
       <h1
         style={{ fontSize: "24px", fontWeight: "bold", marginBottom: "16px" }}
+        class="text-3xl font-bold underline bg-neutral-600"
       >
         GitHub User Search
       </h1>
