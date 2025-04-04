@@ -15,10 +15,8 @@ function Search() {
     setError(false);
     setUsers([]);
 
-    const searchQuery = `${query}+location:${location}+repos:>${minRepos}`;
-
     try {
-      const data = await fetchUsers(searchQuery);
+      const data = await fetchUsers(query, location, minRepos);
       if (data.length > 0) {
         setUsers(data);
       } else {
@@ -132,6 +130,8 @@ function Search() {
                 <h2 style={{ fontSize: "18px", fontWeight: "bold" }}>
                   {user.login}
                 </h2>
+                <p>Location: {user.location || "N/A"}</p>
+                <p>Repositories: {user.public_repos || "N/A"}</p>
                 <a
                   href={user.html_url}
                   target="_blank"
