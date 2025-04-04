@@ -1,27 +1,32 @@
 import { useState } from "react";
-import { fetchUserData } from "../services/githubService";
+import { fetchUsers } from "../services/githubService";
 
 function Search() {
   const [query, setQuery] = useState("");
-  const [user, setUser] = useState(null);
+  const [location, setLocation] = useState("");
+  const [minRepos, setMinRepos] = useState("");
+  const [users, setUsers] = useState([]);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(false);
 
   const handleSearch = async (e) => {
     e.preventDefault();
-    if (!query) return;
-
     setLoading(true);
     setError(false);
-    setUser(null);
+    setUsers([]);
+
+    const searchQuery = `${query}+location:${location}+repos:>${minRepos}`;
 
     try {
-      const data = await fetchUserData(query);
-      setUser(data);
+      const data = await fetchUsers(searchQuery);
+      if (data.length > 0) {
+        setUsers(data);
+      } else {
+        setError(true);
+      }
     } catch {
       setError(true);
     }
-
     setLoading(false);
   };
 
@@ -50,6 +55,32 @@ function Search() {
             borderRadius: "4px",
           }}
         />
+        <input
+          type="text"
+          placeholder="Location"
+          value={location}
+          onChange={(e) => setLocation(e.target.value)}
+          style={{
+            width: "100%",
+            padding: "8px",
+            marginBottom: "8px",
+            border: "1px solid #ccc",
+            borderRadius: "4px",
+          }}
+        />
+        <input
+          type="number"
+          placeholder="Min Repositories"
+          value={minRepos}
+          onChange={(e) => setMinRepos(e.target.value)}
+          style={{
+            width: "100%",
+            padding: "8px",
+            marginBottom: "8px",
+            border: "1px solid #ccc",
+            borderRadius: "4px",
+          }}
+        />
         <button
           type="submit"
           style={{
@@ -70,43 +101,48 @@ function Search() {
       )}
       {error && (
         <p style={{ textAlign: "center", color: "red", marginTop: "16px" }}>
-          Looks like we cant find the user
+          Looks like we can't find users
         </p>
       )}
-      {user && (
-        <div
-          style={{
-            marginTop: "16px",
-            padding: "16px",
-            border: "1px solid #ddd",
-            borderRadius: "4px",
-            display: "flex",
-            alignItems: "center",
-          }}
-        >
-          <img
-            src={user.avatar_url}
-            alt={user.login}
-            style={{
-              width: "48px",
-              height: "48px",
-              borderRadius: "50%",
-              marginRight: "12px",
-            }}
-          />
-          <div>
-            <h2 style={{ fontSize: "18px", fontWeight: "bold" }}>
-              {user.login}
-            </h2>
-            <a
-              href={user.html_url}
-              target="_blank"
-              rel="noopener noreferrer"
-              style={{ color: "#007bff" }}
+      {users.length > 0 && (
+        <div style={{ marginTop: "16px" }}>
+          {users.map((user) => (
+            <div
+              key={user.id}
+              style={{
+                border: "1px solid #ddd",
+                padding: "16px",
+                borderRadius: "4px",
+                marginBottom: "8px",
+                display: "flex",
+                alignItems: "center",
+              }}
             >
-              View Profile
-            </a>
-          </div>
+              <img
+                src={user.avatar_url}
+                alt={user.login}
+                style={{
+                  width: "48px",
+                  height: "48px",
+                  borderRadius: "50%",
+                  marginRight: "12px",
+                }}
+              />
+              <div>
+                <h2 style={{ fontSize: "18px", fontWeight: "bold" }}>
+                  {user.login}
+                </h2>
+                <a
+                  href={user.html_url}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  style={{ color: "#007bff" }}
+                >
+                  View Profile
+                </a>
+              </div>
+            </div>
+          ))}
         </div>
       )}
     </div>
